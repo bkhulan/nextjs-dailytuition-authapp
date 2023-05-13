@@ -1,10 +1,14 @@
+import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
+import { HiAtSymbol, HiFingerPrint } from "react-icons/hi";
 
 import Layout from "../../layout/layout";
 import styles from "../../styles/Form.module.css";
 
 function Login() {
+  const [show, setShow] = useState(false);
   return (
     <Layout>
       <Head>
@@ -24,15 +28,24 @@ function Login() {
               placeholder="Email"
               className={styles.input_text}
             />
+            <span className="icon flex items-center px-4">
+              <HiAtSymbol size={25} />
+            </span>
           </div>
 
           <div className={styles.input_group}>
             <input
-              type="password"
+              type={`${show ? "text" : "password"}`}
               name="password"
               placeholder="Password"
               className={styles.input_text}
             />
+            <span
+              className="icon flex items-center px-4"
+              onClick={() => setShow(!show)}
+            >
+              <HiFingerPrint size={25} />
+            </span>
           </div>
 
           <div className="input-button">
@@ -42,11 +55,17 @@ function Login() {
           </div>
 
           <div className="input-button">
-            <button type="submit">Sign In with Google</button>
+            <button type="button" className={styles.button_custom}>
+              Sign In with Google
+              <Image src={"/assets/google.svg"} width="20" height={20}></Image>
+            </button>
           </div>
 
           <div className="input-button">
-            <button type="submit">Sign In with Github</button>
+            <button type="button" className={styles.button_custom}>
+              Sign In with Github
+              <Image src={"/assets/github.svg"} width="25" height={25}></Image>
+            </button>
           </div>
         </form>
         <p className="text-center text-gray-400">
