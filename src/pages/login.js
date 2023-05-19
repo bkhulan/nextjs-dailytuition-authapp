@@ -5,6 +5,7 @@ import Image from "next/image";
 import { HiAtSymbol, HiFingerPrint } from "react-icons/hi";
 import { signIn, signOut } from "next-auth/react";
 import { useFormik } from "formik";
+import loginValidate from "../../lib/validate";
 
 import Layout from "../../layout/layout";
 import styles from "../../styles/Form.module.css";
@@ -17,8 +18,11 @@ function Login() {
       email: "",
       password: "",
     },
+    validate: loginValidate,
     onSubmit,
   });
+
+  console.log(formik.errors);
 
   async function onSubmit(values) {
     console.log(values);
@@ -50,7 +54,13 @@ function Login() {
         </div>
 
         <form className="flex flex-col gap-5" onSubmit={formik.handleSubmit}>
-          <div className={styles.input_group}>
+          <div
+            className={`${styles.input_group} ${
+              formik.errors.email && formik.touched.email
+                ? "border-rose-600"
+                : ""
+            }`}
+          >
             <input
               type="email"
               name="email"
@@ -63,8 +73,19 @@ function Login() {
               <HiAtSymbol size={25} />
             </span>
           </div>
+          {formik.errors.email && formik.touched.email ? (
+            <span className="text-rose-500">{formik.errors.email}</span>
+          ) : (
+            <></>
+          )}
 
-          <div className={styles.input_group}>
+          <div
+            className={`${styles.input_group} ${
+              formik.errors.password && formik.touched.password
+                ? "border-rose-600"
+                : ""
+            }`}
+          >
             <input
               type={`${show ? "text" : "password"}`}
               name="password"
@@ -80,6 +101,11 @@ function Login() {
               <HiFingerPrint size={25} />
             </span>
           </div>
+          {/* {formik.errors.password && formik.touched.password ? (
+            <span className="text-rose-500">{formik.errors.password}</span>
+          ) : (
+            <></>
+          )} */}
 
           <div className="input-button">
             <button type="submit" className={styles.button}>
@@ -94,7 +120,12 @@ function Login() {
               className={styles.button_custom}
             >
               Sign In with Google
-              <Image src={"/assets/google.svg"} width="20" height={20}></Image>
+              <Image
+                src={"/assets/google.svg"}
+                width="20"
+                height={20}
+                alt="Google asset."
+              ></Image>
             </button>
           </div>
 
@@ -105,7 +136,12 @@ function Login() {
               className={styles.button_custom}
             >
               Sign In with Github
-              <Image src={"/assets/github.svg"} width="25" height={25}></Image>
+              <Image
+                src={"/assets/github.svg"}
+                width="25"
+                height={25}
+                alt="Github asset."
+              ></Image>
             </button>
           </div>
         </form>
